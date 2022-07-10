@@ -31,14 +31,18 @@ class ImagePaths(Dataset):
         self.watermark=watermark
 
         if self.size is not None and self.size > 0:
-#             self.rescaler = albumentations.SmallestMaxSize(max_size = self.size + self.size//16)
-            if not self.random_crop:
-                self.cropper = albumentations.CenterCrop(height=self.size,width=self.size)
-            else:
+            if random.random() < 0.5:
+                self.rescaler = albumentations.SmallestMaxSize(max_size = self.size)
+            else
+                self.rescaler = albumentations.SmallestMaxSize(max_size = self.size*2)
+                
+            if self.random_crop:
                 self.cropper = albumentations.RandomCrop(height=self.size,width=self.size)
+            else:
+                self.cropper = albumentations.CenterCrop(height=self.size,width=self.size)
+
             self.flipper = albumentations.HorizontalFlip()
-            self.preprocessor = albumentations.Compose([self.cropper, self.flipper])
-#             self.preprocessor = albumentations.Compose([self.rescaler, self.cropper, self.flipper])
+            self.preprocessor = albumentations.Compose([self.rescaler, self.cropper, self.flipper])
         else:
             self.preprocessor = lambda **kwargs: kwargs
 
