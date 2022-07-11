@@ -33,7 +33,7 @@ class ImagePaths(Dataset):
         if self.size is not None and self.size > 0:
             if random.random() < 0.5:
                 self.rescaler = albumentations.SmallestMaxSize(max_size = self.size)
-            else
+            else:
                 self.rescaler = albumentations.SmallestMaxSize(max_size = self.size*2)
                 
             if self.random_crop:
